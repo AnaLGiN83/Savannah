@@ -1,6 +1,5 @@
-from flask import Flask, render_template
-
-app = Flask(__name__)  # TODO: Проработать архитектуру для app в корректном месте
+from app import app
+from flask import render_template
 
 
 @app.route('/')
