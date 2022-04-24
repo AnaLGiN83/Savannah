@@ -10,6 +10,7 @@
 
     <title>{% block title %} {% endblock %}</title>
   </head>
+  {% set active_page = active_page|default('index') -%}
   <body>
     <nav class="navbar navbar-expand-md navbar-light bg-light">
         <a class="navbar-brand" href="{{ url_for('index')}}">Savannah</a>
@@ -18,9 +19,14 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
-            <li class="nav-item active">
-                <a class="nav-link" href="#">Status</a>
-                <a class="nav-link" href="#">Settings</a>
+            <li class="nav-item {% if 'index' == active_page %}active{% endif %}">
+                <a class="nav-link" href="/">Status</a>
+            </li>
+            <li class="nav-item {% if 'alerts' == active_page %}active{% endif %}">
+                <a class="nav-link" href="/alerts">Alerts</a>
+            </li>
+            <li class="nav-item {% if 'settings' == active_page %}active{% endif %}">
+                <a class="nav-link" href="/settings">Settings</a>
             </li>
             </ul>
         </div>
