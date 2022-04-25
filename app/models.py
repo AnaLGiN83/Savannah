@@ -1,4 +1,5 @@
-from peewee import SqliteDatabase, Model, CharField, IntegerField, DateTimeField, datetime as peewee_datetime
+from peewee import SqliteDatabase, Model, CharField, IntegerField, DateTimeField, DoesNotExist, \
+    datetime as peewee_datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from app import loginManager
@@ -9,7 +10,10 @@ db = SqliteDatabase(DB_NAME)
 
 @loginManager.user_loader
 def load_user(user_id):
-    return User.get(User.id == user_id)
+    try:
+        return User.get(User.id == user_id)
+    except DoesNotExist:
+        return None
 
 
 class User(Model, UserMixin):
