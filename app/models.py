@@ -4,7 +4,6 @@ from flask_login import UserMixin
 from app import loginManager
 from .config import DB_NAME
 
-
 db = SqliteDatabase(DB_NAME)
 
 
@@ -36,3 +35,11 @@ class User(Model, UserMixin):
 
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+
+# If database users table not exists or empty, creating default one
+if not db.table_exists('users'):
+    User.create_table()
+    default_user = User(username='admin')
+    default_user.set_password('admin')
+    default_user.save()
