@@ -1,0 +1,12 @@
+{% if stats_error %}
+    <p>EVE loading error.</p>
+{% else %}
+    <p>Uptime: {{ stats.uptime }}</p>
+    <p>Packets captured: {{ stats.packets_captured }}</p>
+    <p>Capture errors: {{ stats.capture_errors }}</p>
+    <p>TCP packets: {{ stats.tcp_packets }}</p>
+    <p>UDP packets: {{ stats.udp_packets }}</p>
+    <p>Rules loaded: {{ stats.rules_loaded }}</p>
+    <p>Rules failed: {{ stats.rules_failed }}</p>
+    <p>Alerts count: {{ stats.alerts }}</p>
+{% endif %}

@@ -4,9 +4,11 @@ from flask_login import login_required, logout_user, current_user
 
 
 @app.route('/')
-@login_required
 def index():
-    return render_template('index.html')
+    if not current_user.is_authenticated:
+        return redirect(url_for('auth_get'))
+    error, stats = controllers.get_last_stats()
+    return render_template('index.html', stats=stats, stats_error=error, daemon_status=controllers.get_daemon_status())
 
 
 @app.route('/alerts')

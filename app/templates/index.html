@@ -2,5 +2,13 @@
 {% set active_page = "index" %}
 
 {% block content %}
-    <h1>{% block title %} Savannah for Suricata {% endblock %}</h1>
+    <h1>{% block title %} Status {% endblock %}</h1>
+    <div class="mb-5">
+        <span>Service status: </span>
+        <span class="font-weight-bold">{{ daemon_status }}</span>
+    </div>
+    <div>
+        <h3>Actual statistics:</h3>
+        {% include 'stats.html' %}
+    </div>
 {% endblock %}
