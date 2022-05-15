@@ -1,9 +1,6 @@
 # Savannah
 Savannah is a simple open source web UI for IDS/IPS Suricata
+Config in app/config.py
 
-    pip install flask
-
-    cd app
-    $env:FLASK_APP = "views"
-    $env:FLASK_ENV = "development"
-    flask run
+    pip install -r requirements.txt
+    python3 run.py
