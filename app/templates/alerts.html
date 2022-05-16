@@ -3,4 +3,38 @@
 
 {% block content %}
     <h1>{% block title %} Suricata Alerts {% endblock %}</h1>
+    {% if alerts_error %}
+        <h3>EVE loading error. Alerts cannot be loaded.</h3>
+    {% else %}
+    <table>
+        <tr>
+            <td class="font-weight-bold">Time</td>
+            <td class="font-weight-bold">Interface</td>
+            <td class="font-weight-bold">Src IP</td>
+            <td class="font-weight-bold">Src Port</td>
+            <td class="font-weight-bold">Dest IP</td>
+            <td class="font-weight-bold">Dest Port</td>
+            <td class="font-weight-bold">Protocol</td>
+            <td class="font-weight-bold">App Protocol</td>
+            <td class="font-weight-bold">SID</td>
+            <td class="font-weight-bold">Message</td>
+            <td class="font-weight-bold">Severity</td>
+        </tr>
+        {% for alert in alerts %}
+            <tr>
+            <td>{{ alert.datetime }}</td>
+            <td>{{ alert.interface }}</td>
+            <td>{{ alert.source_ip }}</td>
+            <td>{{ alert.source_port }}</td>
+            <td>{{ alert.dest_ip }}</td>
+            <td>{{ alert.dest_port }}</td>
+            <td>{{ alert.protocol }}</td>
+            <td>{{ alert.app_protocol }}</td>
+            <td>{{ alert.sid }}</td>
+            <td>{{ alert.signature }}</td>
+            <td>{{ alert.severity }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
 {% endblock %}

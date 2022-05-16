@@ -14,7 +14,8 @@ def index():
 @app.route('/alerts')
 @login_required
 def alerts():
-    return render_template('alerts.html')
+    error, alert_list = controllers.get_alerts()
+    return render_template('alerts.html', alerts=alert_list, alerts_error=error)
 
 
 @app.route('/settings')

@@ -40,3 +40,29 @@ def get_last_stats():
         'rules_failed': event['stats']['detect']['engines'][0]['rules_failed'],
         'alerts': event['stats']['detect']['alert'],
     }
+
+
+def get_alerts():
+    # TODO: Поддержка страничного вывода любого кол-ва тревог
+    error, data = utils.tail_jq(config.EVE_PATH, 10000, "select(.event_type==\"alert\")")
+    if error:
+        return error, None
+    data.pop(-1)
+    alerts = []
+    for line in data:
+        event = json.loads(line)
+        alerts.append({
+            'datetime': event['timestamp'],
+            'interface': event['in_iface'],
+            'source_ip': event['src_ip'],
+            'source_port': event['src_port'],
+            'dest_ip': event['dest_ip'],
+            'dest_port': event['dest_port'],
+            'protocol': event['proto'],
+            'app_protocol': event['app_proto'],
+            'sid': event['alert']['signature_id'],
+            'signature': event['alert']['signature'],
+            'severity': event['alert']['severity'],
+        })
+
+    return 0, alerts
