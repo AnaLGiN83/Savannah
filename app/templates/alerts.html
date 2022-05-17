@@ -6,7 +6,7 @@
     {% if alerts_error %}
         <h3>EVE loading error. Alerts cannot be loaded.</h3>
     {% else %}
-        <form action="#" method="get">
+        <form method="get">
             <div class="input-group mb-3">
                 <label class="input-group-text" for="p">Page</label>
                 <input class="form-control input-sm" id="p" name="p" type="number" value="{{ curr_page }}" max="{{ total_pages }}" min="1" width="auto">
