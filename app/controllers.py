@@ -124,3 +124,15 @@ def create_user(username, password, is_admin, name=None):
     except peewee.IntegrityError:
         return 3  # User already exists
     return 0  # OK
+
+
+def get_suricata_log():
+    return utils.tail(config.SURICATA_LOG_PATH, 50)
+
+
+def get_savannah_log():
+    return 0, "Not exists"
+
+
+def update_rules():
+    return utils.suricata_update()

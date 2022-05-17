@@ -24,10 +24,29 @@ def alerts():
                            curr_page=page)
 
 
-@app.route('/settings')
+@app.route('/settings', methods=['GET'])
 @login_required
-def settings():
-    return render_template('settings.html')
+def settings_get():
+    if not current_user.is_admin:
+        return abort(404)
+    suricata_error, suricata_log = controllers.get_suricata_log()
+    savannah_error, savannah_log = controllers.get_savannah_log()
+    return render_template('settings.html', suricata_error=suricata_error, savannah_error=savannah_error,
+                           suricata_log=suricata_log, savannah_log=savannah_log)
+
+
+@app.route('/settings', methods=['POST'])
+@login_required
+def settings_post():
+    if not current_user.is_admin:
+        return abort(404)
+    req_type = request.form.get('req_type')
+    if req_type and req_type == 'suricata-update':
+        error, data = controllers.update_rules()
+        if error:
+            return f"Error code {error}"
+        else:
+            return data
 
 
 @app.route('/auth', methods=['GET'])
