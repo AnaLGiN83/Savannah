@@ -31,7 +31,7 @@
         $(document).ready(function () {
            $("#update-form").submit(function ( event ){
                event.preventDefault();
-               $("#update-form-submit").disabled = true;
+               $("#update-form-submit").attr("disabled", true);
                sendAjaxForm("update-form", "suricata-update-output");
            })
         });
@@ -45,12 +45,12 @@
                 success: function (response) {
                     $('#' + output).html(response);
                     form.trigger('reset');
-                    $("#update-form-submit").disabled = false;
+                    $("#update-form-submit").attr("disabled", false);
                 },
                 error: function (error) {
                     $('#' + output).html(error);
                     form.trigger('reset');
-                    $("#update-form-submit").disabled = false;
+                    $("#update-form-submit").attr("disabled", false);
                 }
             });
         }
