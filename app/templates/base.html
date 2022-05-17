@@ -25,10 +25,10 @@
             <li class="nav-item {% if 'alerts' == active_page %}active{% endif %}">
                 <a class="nav-link" href="/alerts">Alerts</a>
             </li>
-            <li class="nav-item {% if 'settings' == active_page %}active{% endif %}">
-                <a class="nav-link" href="/settings">Settings</a>
-            </li>
             {% if current_user.is_admin %}
+                <li class="nav-item {% if 'settings' == active_page %}active{% endif %}">
+                    <a class="nav-link" href="/settings">Settings</a>
+                </li>
                 <li class="nav-item {% if 'users' == active_page %}active{% endif %}">
                     <a class="nav-link" href="/users">Users</a>
                 </li>
