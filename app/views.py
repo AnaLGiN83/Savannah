@@ -44,7 +44,7 @@ def settings_post():
     if req_type and req_type == 'suricata-update':
         error, data = controllers.update_rules()
         if error:
-            return f"Error code {error}"
+            return f"Error code {error}\n" + (data or "")
         else:
             return data
 
