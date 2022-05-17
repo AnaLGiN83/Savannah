@@ -2,5 +2,54 @@
 {% set active_page = "settings" %}
 
 {% block content %}
-    <h1>{% block title %} Suricata Rules {% endblock %}</h1>
+    <h1 class="mb-3">{% block title %} Settings {% endblock %}</h1>
+    <h3>Suricata Update</h3>
+    <div class="mb-5">
+        <form action="/settings" method="post" id="update-form">
+            <input type="hidden" name="req_type" value="suricata-update">
+            <button class="btn btn-primary" type="submit">Update rules</button>
+            <p><i>Note: Savannah needs to be run as root (sudo mode) to update rules.</i></p>
+        </form>
+        <div>
+            <label for="suricata-update-output">Update output:</label>
+            <textarea class="form-control" id="suricata-update-output" rows="3" readonly></textarea>
+        </div>
+    </div>
+    <h3>Suricata main log</h3>
+    <div class="mb-5">
+        <textarea class="form-control" id="suricata-log" rows="3" readonly>{% if suricata_error %}Error while loading log file.
+            {% else %}{{ suricata_log }}
+            {% endif %}</textarea>
+    </div>
+    <h3>Savannah log</h3>
+    <div class="mb-5">
+        <textarea class="form-control" id="savannah-log" rows="3" readonly>{% if savannah_error %} Error while loading log file.
+            {% else %}{{ savannah_log }}
+            {% endif %}</textarea>
+    </div>
+    <script>
+        $(document).ready(function () {
+           $("#update-form").submit(function ( event ){
+               event.preventDefault();
+               sendAjaxForm("update-form", "suricata-update-output");
+           })
+        });
+
+        function sendAjaxForm(form_ajax, output){
+            var form = $("#" + form_ajax);
+            $.ajax({
+                type: form.attr('method'),
+                url: form.attr('action'),
+                data: form.serialize(),
+                success: function (response) {
+                    $('#' + output).html(response);
+                    form.trigger('reset');
+                },
+                error: function (error) {
+                    $('#' + output).html(error);
+                    form.trigger('reset');
+                }
+            });
+        }
+    </script>
 {% endblock %}
