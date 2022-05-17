@@ -51,6 +51,7 @@ def get_last_stats():
 
 
 def get_alerts(count, offset=0):  # TODO: Вынести в модель формат вывода данных
+    alerts_count = None
     try:
         log_base = redis.StrictRedis(config.REDIS_HOST, config.REDIS_PORT)
         alerts_count = log_base.llen(config.REDIS_ALERTS_NAME)
