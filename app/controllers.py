@@ -1,4 +1,6 @@
 import datetime
+
+import peewee
 import redis
 from .models import User
 from peewee import DoesNotExist
@@ -86,3 +88,39 @@ def get_alerts(count, offset=0):  # TODO: Вынести в модель фор�
         })
 
     return 0, alerts, alerts_count // 50 + 1
+
+
+def set_user_admin_by_id(user_id, is_admin):
+    try:
+        user = User.get(User.id == user_id)
+        user.is_admin = is_admin
+        if user.save() != 1:
+            return 2  # Internal error
+    except DoesNotExist:
+        return 1
+    return 0  # OK
+
+
+def delete_user_by_id(user_id):
+    try:
+        user = User.get(User.id == user_id)
+        if user.delete_instance() != 1:
+            return 2  # Internal error
+    except DoesNotExist:
+        return 1
+    return 0  # OK
+
+
+def create_user(username, password, is_admin, name=None):
+    if isinstance(name, str) and name.strip() == '':
+        name = None
+    try:
+        user = User(username=username, name=name, is_admin=is_admin)
+        user.set_password(password)
+        if user.save() != 1:
+            return 2  # Internal error
+    except DoesNotExist:
+        return 1
+    except peewee.IntegrityError:
+        return 3  # User already exists
+    return 0  # OK
