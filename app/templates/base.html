@@ -34,7 +34,10 @@
                 </li>
             {% endif %}
             </ul>
-            <a class="navbar-text" href="/logout">Logout</a>
+            <div>
+                <span class="navbar-text text-primary mr-2">{{ current_user.username }}</span>
+                <a class="navbar-text" href="/logout">Logout</a>
+            </div>
         </div>
     </nav>
     <div class="container">
