@@ -7,7 +7,7 @@
     <div class="mb-5">
         <form action="/settings" method="post" id="update-form">
             <input type="hidden" name="req_type" value="suricata-update">
-            <button class="btn btn-primary" type="submit">Update rules</button>
+            <button class="btn btn-primary" type="submit" id="update-form-submit">Update rules</button>
             <p><i>Note: Savannah needs to be run as root (sudo mode) to update rules.</i></p>
         </form>
         <div>
@@ -31,6 +31,7 @@
         $(document).ready(function () {
            $("#update-form").submit(function ( event ){
                event.preventDefault();
+               $("#update-form-submit").disabled = true;
                sendAjaxForm("update-form", "suricata-update-output");
            })
         });
@@ -44,10 +45,12 @@
                 success: function (response) {
                     $('#' + output).html(response);
                     form.trigger('reset');
+                    $("#update-form-submit").disabled = false;
                 },
                 error: function (error) {
                     $('#' + output).html(error);
                     form.trigger('reset');
+                    $("#update-form-submit").disabled = false;
                 }
             });
         }
