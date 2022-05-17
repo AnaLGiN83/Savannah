@@ -1,5 +1,5 @@
 from peewee import SqliteDatabase, Model, CharField, IntegerField, DateTimeField, DoesNotExist, \
-    datetime as peewee_datetime
+    datetime as peewee_datetime, BooleanField
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from app import loginManager
@@ -26,6 +26,7 @@ class User(Model, UserMixin):
     password_hash = CharField(null=False)
     created_on = DateTimeField(default=peewee_datetime.datetime.now())
     updated_on = DateTimeField(default=peewee_datetime.datetime.now())
+    is_admin = BooleanField(default=False)
 
     def save(self, *args, **kwargs):
         self.updated_on = peewee_datetime.datetime.now()
@@ -46,4 +47,5 @@ if not db.table_exists('users'):
     User.create_table()
     default_user = User(username='admin')
     default_user.set_password('admin')
+    default_user.is_admin = True
     default_user.save()
