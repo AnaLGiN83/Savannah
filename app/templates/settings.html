@@ -12,18 +12,18 @@
         </form>
         <div>
             <label for="suricata-update-output">Update output:</label>
-            <textarea class="form-control" id="suricata-update-output" rows="3" readonly></textarea>
+            <textarea class="form-control" id="suricata-update-output" rows="8" readonly></textarea>
         </div>
     </div>
     <h3>Suricata main log</h3>
     <div class="mb-5">
-        <textarea class="form-control" id="suricata-log" rows="3" readonly>{% if suricata_error %}Error while loading log file.
+        <textarea class="form-control" id="suricata-log" rows="8" readonly>{% if suricata_error %}Error while loading log file.
             {% else %}{{ suricata_log }}
             {% endif %}</textarea>
     </div>
     <h3>Savannah log</h3>
     <div class="mb-5">
-        <textarea class="form-control" id="savannah-log" rows="3" readonly>{% if savannah_error %} Error while loading log file.
+        <textarea class="form-control" id="savannah-log" rows="8" readonly>{% if savannah_error %} Error while loading log file.
             {% else %}{{ savannah_log }}
             {% endif %}</textarea>
     </div>
