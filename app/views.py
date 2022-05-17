@@ -1,5 +1,5 @@
 from app import app, controllers
-from flask import render_template, request, redirect, url_for, flash
+from flask import render_template, request, redirect, url_for, flash, abort
 from flask_login import login_required, logout_user, current_user
 
 
@@ -14,8 +14,13 @@ def index():
 @app.route('/alerts')
 @login_required
 def alerts():
-    error, alert_list = controllers.get_alerts()
-    return render_template('alerts.html', alerts=alert_list, alerts_error=error)
+    page = request.args.get('p') or '1'
+    if not isinstance(page, str) or not page.isdigit() or int(page) < 1 or int(page) > 100000:
+        return abort(404)
+    page = int(page)
+    error, alert_list, total_pages = controllers.get_alerts(50 * page, 50 * (page - 1))
+    return render_template('alerts.html', alerts=alert_list, alerts_error=error, total_pages=total_pages,
+                           curr_page=page)
 
 
 @app.route('/settings')

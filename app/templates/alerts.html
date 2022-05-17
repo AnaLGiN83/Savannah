@@ -6,35 +6,50 @@
     {% if alerts_error %}
         <h3>EVE loading error. Alerts cannot be loaded.</h3>
     {% else %}
-    <table>
-        <tr>
-            <td class="font-weight-bold">Time</td>
-            <td class="font-weight-bold">Interface</td>
-            <td class="font-weight-bold">Src IP</td>
-            <td class="font-weight-bold">Src Port</td>
-            <td class="font-weight-bold">Dest IP</td>
-            <td class="font-weight-bold">Dest Port</td>
-            <td class="font-weight-bold">Protocol</td>
-            <td class="font-weight-bold">App Protocol</td>
-            <td class="font-weight-bold">SID</td>
-            <td class="font-weight-bold">Message</td>
-            <td class="font-weight-bold">Severity</td>
-        </tr>
-        {% for alert in alerts %}
-            <tr>
-            <td>{{ alert.datetime }}</td>
-            <td>{{ alert.interface }}</td>
-            <td>{{ alert.source_ip }}</td>
-            <td>{{ alert.source_port }}</td>
-            <td>{{ alert.dest_ip }}</td>
-            <td>{{ alert.dest_port }}</td>
-            <td>{{ alert.protocol }}</td>
-            <td>{{ alert.app_protocol }}</td>
-            <td>{{ alert.sid }}</td>
-            <td>{{ alert.signature }}</td>
-            <td>{{ alert.severity }}</td>
-            </tr>
-        {% endfor %}
-    </table>
+        <form action="#" method="get">
+            <div class="input-group mb-3">
+                <label class="input-group-text" for="p">Page</label>
+                <input class="form-control input-sm" id="p" name="p" type="number" value="{{ curr_page }}" max="{{ total_pages }}" min="1" width="auto">
+                <span class="input-group-text"> / </span>
+                <input class="form-control" type="text" readonly value="{{ total_pages }}">
+                <button class="btn btn-outline-secondary">Submit</button>
+            </div>
+        </form>
+        <div>
+            <table class="table table-striped table-sm">
+                <thead class="font-weight-bold">
+                    <tr>
+                    <td>Time</td>
+                    <td>Interface</td>
+                    <td>Src IP</td>
+                    <td>Src Port</td>
+                    <td>Dest IP</td>
+                    <td>Dest Port</td>
+                    <td>Protocol</td>
+                    <td>App Protocol</td>
+                    <td>SID</td>
+                    <td>Message</td>
+                    <td>Severity</td>
+                </tr>
+                </thead>
+                <tbody>
+                    {% for alert in alerts %}
+                        <tr>
+                        <td>{{ alert.datetime }}</td>
+                        <td>{{ alert.interface }}</td>
+                        <td>{{ alert.source_ip }}</td>
+                        <td>{{ alert.source_port }}</td>
+                        <td>{{ alert.dest_ip }}</td>
+                        <td>{{ alert.dest_port }}</td>
+                        <td>{{ alert.protocol }}</td>
+                        <td>{{ alert.app_protocol }}</td>
+                        <td>{{ alert.sid }}</td>
+                        <td>{{ alert.signature }}</td>
+                        <td>{{ alert.severity }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     {% endif %}
 {% endblock %}

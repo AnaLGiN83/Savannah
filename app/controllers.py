@@ -1,5 +1,5 @@
 import datetime
-
+import redis
 from .models import User
 from peewee import DoesNotExist
 from flask_login import login_user
@@ -25,10 +25,18 @@ def get_daemon_status():
 
 
 def get_last_stats():
-    error, data = utils.tail_jq(config.EVE_PATH, 10000, "select(.event_type==\"stats\")")
-    if error:
-        return error, None
-    event = json.loads(data[-2])
+    try:
+        log_base = redis.StrictRedis(config.REDIS_HOST, config.REDIS_PORT)
+        if log_base.llen(config.REDIS_STATS_NAME) == 0:
+            return 2, None
+        last_stat = log_base.lindex(config.REDIS_STATS_NAME, 0)
+    except redis.exceptions.ConnectionError as ex:
+        return 1, None
+
+    try:
+        event = json.loads(last_stat)
+    except json.JSONDecodeError:
+        return 4, None
 
     return 0, {
         'uptime': str(datetime.timedelta(seconds=event['stats']['uptime'])),
@@ -42,17 +50,28 @@ def get_last_stats():
     }
 
 
-def get_alerts():
-    # TODO: Поддержка страничного вывода любого кол-ва тревог
-    error, data = utils.tail_jq(config.EVE_PATH, 10000, "select(.event_type==\"alert\")")
-    if error:
-        return error, None
-    data.pop(-1)
+def get_alerts(count, offset=0):  # TODO: Вынести в модель формат вывода данных
+    try:
+        log_base = redis.StrictRedis(config.REDIS_HOST, config.REDIS_PORT)
+        alerts_count = log_base.llen(config.REDIS_ALERTS_NAME)
+        if alerts_count == 0:
+            return 3, None, 1
+        if alerts_count <= offset:
+            return 2, None, alerts_count // 50 + 1
+        result_count = count
+        if alerts_count - offset < count:
+            result_count = alerts_count - offset
+        data = log_base.lrange(config.REDIS_ALERTS_NAME, offset, offset + result_count - 1)
+    except redis.exceptions.ConnectionError as ex:
+        return 1, None, (alerts_count or 0) // 50 + 1
+    except json.JSONDecodeError:
+        return 4, None, (alerts_count or 0) // 50 + 1
+
     alerts = []
     for line in data:
         event = json.loads(line)
         alerts.append({
-            'datetime': event['timestamp'],
+            'datetime': event['timestamp'][:-12],
             'interface': event['in_iface'],
             'source_ip': event['src_ip'],
             'source_port': event['src_port'],
@@ -65,4 +84,4 @@ def get_alerts():
             'severity': event['alert']['severity'],
         })
 
-    return 0, alerts
+    return 0, alerts, alerts_count // 50 + 1
