@@ -74,23 +74,25 @@ class AlertTestCase(unittest.TestCase):
 
     def setUp(self):
         Alert.database = redis.StrictRedis(REDIS_HOST, REDIS_PORT)
-        Alert.database.lpush('test_alerts', self.test_alerts)
+        for alert in self.test_alerts:
+            Alert.database.lpush('test_alerts', alert)
         Alert.list_name = 'test_alerts'
 
     def tearDown(self):
-        if Alert.database.get('test_alerts'):
+        if Alert.database.exists('test_alerts'):
             Alert.database.delete('test_alerts')
 
     def test_data_normal(self):
         self.assertEqual(Alert.count(), 2)
 
     def test_get(self):
-        self.assertEqual(Alert.parse_from_eve(self.test_alerts[0]), Alert.get_by_id(0))
+        self.assertEqual(Alert.parse_from_eve(self.test_alerts[1]), Alert.get_by_id(0))
 
     def test_get_range(self):
         processed = []
         for line in self.test_alerts:
             processed.append(Alert.parse_from_eve(line))
+        processed.reverse()
         self.assertEqual(processed, Alert.get_range(0, 2))
 
 
@@ -102,23 +104,25 @@ class StatTestCase(unittest.TestCase):
 
     def setUp(self):
         Stat.database = redis.StrictRedis(REDIS_HOST, REDIS_PORT)
-        Stat.database.lpush('test_stats', self.test_stats)
+        for stat in self.test_stats:
+            Stat.database.lpush('test_stats', stat)
         Stat.list_name = 'test_stats'
 
     def tearDown(self):
-        if Stat.database.get('test_stats'):
+        if Stat.database.exists('test_stats'):
             Stat.database.delete('test_stats')
 
     def test_data_normal(self):
         self.assertEqual(Stat.count(), 2)
 
     def test_get(self):
-        self.assertEqual(Stat.parse_from_eve(self.test_stats[0]), Stat.get_by_id(0))
+        self.assertEqual(Stat.parse_from_eve(self.test_stats[1]), Stat.get_by_id(0))
 
     def test_get_range(self):
         processed = []
         for line in self.test_stats:
             processed.append(Stat.parse_from_eve(line))
+        processed.reverse()
         self.assertEqual(processed, Stat.get_range(0, 2))
 
 
