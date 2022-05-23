@@ -64,6 +64,19 @@ class Alert(Model):
     signature = CharField(2048, null=False)
     severity = IntegerField(null=False)
 
+    def __eq__(self, other):
+        return self.datetime == other.datetime and \
+               self.interface == other.interface and \
+               self.source_ip == other.source_ip and \
+               self.source_port == other.source_port and \
+               self.dest_ip == other.dest_ip and \
+               self.dest_port == other.dest_port and \
+               self.protocol == other.protocol and \
+               self.app_protocol == other.app_protocol and \
+               self.sid == other.sid and \
+               self.signature == other.signature and \
+               self.severity == other.severity
+
     @classmethod
     def parse_from_eve(cls, eve):
         event = json.loads(eve)
@@ -113,6 +126,16 @@ class Stat(Model):
     rules_loaded = IntegerField(null=False)
     rules_failed = IntegerField(null=False)
     alerts = IntegerField(null=False)
+
+    def __eq__(self, other):
+        return self.uptime == other.uptime and \
+               self.packets_captured == other.packets_captured and \
+               self.capture_errors == other.capture_errors and \
+               self.tcp_packets == other.tcp_packets and \
+               self.udp_packets == other.udp_packets and \
+               self.rules_loaded == other.rules_loaded and \
+               self.rules_failed == other.rules_failed and \
+               self.alerts == other.alerts
 
     @classmethod
     def parse_from_eve(cls, eve):
