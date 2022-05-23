@@ -50,6 +50,7 @@ class User(Model, UserMixin):
 
 class Alert(Model):
     database = redisBase
+    list_name = REDIS_ALERTS_NAME
 
     datetime = DateTimeField(null=False)
     interface = CharField(null=False)
@@ -85,23 +86,24 @@ class Alert(Model):
     @classmethod
     def get_by_id(cls, pk):
         return cls.parse_from_eve(
-            cls.database.lindex(REDIS_ALERTS_NAME, pk))
+            cls.database.lindex(cls.list_name, pk))
 
     @classmethod
     def get_range(cls, offset, count):
         alerts_range = []
-        redis_range = cls.database.lrange(REDIS_ALERTS_NAME, offset, offset + count - 1)
+        redis_range = cls.database.lrange(cls.list_name, offset, offset + count - 1)
         for line in redis_range:
             alerts_range.append(cls.parse_from_eve(line))
         return alerts_range
 
     @classmethod
     def count(cls):
-        return cls.database.llen(REDIS_ALERTS_NAME)
+        return cls.database.llen(cls.list_name)
 
 
 class Stat(Model):
     database = redisBase
+    list_name = REDIS_STATS_NAME
 
     uptime = DateTimeField(null=False)
     packets_captured = IntegerField(null=False)
@@ -131,19 +133,19 @@ class Stat(Model):
     @classmethod
     def get_by_id(cls, pk):
         return cls.parse_from_eve(
-            cls.database.lindex(REDIS_STATS_NAME, pk))
+            cls.database.lindex(cls.list_name, pk))
 
     @classmethod
     def get_range(cls, offset, count):
         stats_range = []
-        redis_range = cls.database.lrange(REDIS_STATS_NAME, offset, offset + count - 1)
+        redis_range = cls.database.lrange(cls.list_name, offset, offset + count - 1)
         for line in redis_range:
             stats_range.append(cls.parse_from_eve(line))
         return stats_range
 
     @classmethod
     def count(cls):
-        return cls.database.llen(REDIS_STATS_NAME)
+        return cls.database.llen(cls.list_name)
 
 
 # If database users table not exists or empty, creating default one
