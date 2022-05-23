@@ -2,22 +2,22 @@
 {% set active_page = "settings" %}
 
 {% block content %}
-    <h1 class="mb-3">{% block title %} Settings {% endblock %}</h1>
-    <h3>Suricata Update</h3>
+    <h1 class="mb-3">{% block title %} {{ _('Settings') }} {% endblock %}</h1>
+    <h3>{{ _('Suricata Update') }}</h3>
     <div class="mb-5">
         <form action="/settings" method="post" id="update-form">
             <input type="hidden" name="req_type" value="suricata-update">
-            <button class="btn btn-primary" type="submit" id="update-form-submit">Update rules</button>
-            <p><i>Note: Savannah needs to be run as root (sudo mode) to update rules.</i></p>
+            <button class="btn btn-primary" type="submit" id="update-form-submit">{{ _('Update rules') }}</button>
+            <p><i>{{ _('Note: Savannah needs to be run as root (sudo mode) to update rules.') }}</i></p>
         </form>
         <div>
-            <label for="suricata-update-output">Update output:</label>
+            <label for="suricata-update-output">{{ _('Update output:') }}</label>
             <textarea class="form-control" id="suricata-update-output" rows="8" readonly></textarea>
         </div>
     </div>
-    <h3>Suricata main log</h3>
+    <h3>{{ _('Suricata main log') }}</h3>
     <div class="mb-5">
-        <textarea class="form-control" id="suricata-log" rows="8" readonly>{% if suricata_error %}Error while loading log file.
+        <textarea class="form-control" id="suricata-log" rows="8" readonly>{% if suricata_error %}{{ _('Error while loading log file.') }}
             {% else %}{{ suricata_log }}
             {% endif %}</textarea>
     </div>

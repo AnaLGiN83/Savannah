@@ -25,23 +25,23 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav mr-auto">
             <li class="nav-item {% if 'index' == active_page %}active{% endif %}">
-                <a class="nav-link" href="/">Status</a>
+                <a class="nav-link" href="/">{{ _('Status') }}</a>
             </li>
             <li class="nav-item {% if 'alerts' == active_page %}active{% endif %}">
-                <a class="nav-link" href="/alerts">Alerts</a>
+                <a class="nav-link" href="/alerts">{{ _('Alerts') }}</a>
             </li>
             {% if current_user.is_admin %}
                 <li class="nav-item {% if 'settings' == active_page %}active{% endif %}">
-                    <a class="nav-link" href="/settings">Settings</a>
+                    <a class="nav-link" href="/settings">{{ _('Settings') }}</a>
                 </li>
                 <li class="nav-item {% if 'users' == active_page %}active{% endif %}">
-                    <a class="nav-link" href="/users">Users</a>
+                    <a class="nav-link" href="/users">{{ _('Users') }}</a>
                 </li>
             {% endif %}
             </ul>
             <div>
                 <span class="navbar-text text-primary mr-2">{{ current_user.username }}</span>
-                <a class="navbar-text" href="/logout">Logout</a>
+                <a class="navbar-text" href="/logout">{{ _('Logout') }}</a>
             </div>
         </div>
     </nav>

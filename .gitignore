@@ -178,3 +178,6 @@ fabric.properties
 
 # Database
 savannahData.db
+
+# Translation base
+base.pot

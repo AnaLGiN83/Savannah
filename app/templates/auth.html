@@ -8,7 +8,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-    <title>Login - Savannah</title>
+    <title>{{ _('Login - Savannah') }}</title>
   </head>
   <body>
     <nav class="navbar navbar-expand-md navbar-light bg-light">
@@ -27,12 +27,12 @@
 
                   <!-- Login input -->
                   <div class="form-outline mb-3">
-                      <input type="text" class="form-control" name="username" placeholder="Username" autofocus="" required/>
+                      <input type="text" class="form-control" name="username" placeholder="{{ _('Username') }}" autofocus="" required/>
                   </div>
 
                   <!-- Password input -->
                   <div class="form-outline mb-3">
-                    <input type="password" name="password" class="form-control" placeholder="Password" required/>
+                    <input type="password" name="password" class="form-control" placeholder="{{ _('Password') }}" required/>
                   </div>
                     {% with messages = get_flashed_messages(with_categories=true) %}
                         {% if messages %}
@@ -45,7 +45,7 @@
                     {% endwith %}
 
                   <!-- Submit button -->
-                  <button class="btn btn-primary btn-block mb-4">Sign in</button>
+                  <button class="btn btn-primary btn-block mb-4">{{ _('Sign in') }}</button>
 
                 </form>
             </section>

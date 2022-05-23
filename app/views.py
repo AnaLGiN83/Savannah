@@ -1,7 +1,13 @@
-from app import app, controllers
+from app import app, controllers, babel, LANGUAGES
 from flask import render_template, request, redirect, url_for, flash, abort
 from flask_login import login_required, logout_user, current_user
 from .models import User
+from flask_babel import gettext
+
+
+@babel.localeselector
+def get_locale():
+    return request.accept_languages.best_match(LANGUAGES.keys())
 
 
 @app.route('/')
@@ -62,7 +68,7 @@ def auth_post():
     password = request.form.get('password')
     if username and password and controllers.authenticate(username, password):
         return redirect(url_for('index'))
-    flash("Invalid username or password.", "error")
+    flash(gettext("Invalid username or password."), "error")
     return redirect(url_for('auth_get'))
 
 
@@ -70,7 +76,7 @@ def auth_post():
 @login_required
 def logout():
     logout_user()
-    flash("You have been logged out.")
+    flash(gettext("You have been logged out."))
     return redirect(url_for('auth_get'))
 
 
