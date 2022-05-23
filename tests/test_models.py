@@ -2,6 +2,7 @@ import unittest
 
 import peewee
 import redis
+import app
 from app.models import User, Alert, Stat
 from peewee import SqliteDatabase
 from app.config import REDIS_HOST, REDIS_PORT
