@@ -1,3 +1,4 @@
+import datetime
 import json
 
 import redis
@@ -97,6 +98,52 @@ class Alert(Model):
     @classmethod
     def count(cls):
         return cls.database.llen(REDIS_ALERTS_NAME)
+
+
+class Stat(Model):
+    database = redisBase
+
+    uptime = DateTimeField(null=False)
+    packets_captured = IntegerField(null=False)
+    capture_errors = IntegerField(null=False)
+    tcp_packets = IntegerField(null=False)
+    udp_packets = IntegerField(null=False)
+    rules_loaded = IntegerField(null=False)
+    rules_failed = IntegerField(null=False)
+    alerts = IntegerField(null=False)
+
+    @classmethod
+    def parse_from_eve(cls, eve):
+        event = json.loads(eve)
+        return cls(uptime=str(datetime.timedelta(seconds=event['stats']['uptime'])),
+                   packets_captured=event['stats']['capture']['kernel_packets'],
+                   capture_errors=event['stats']['capture']['errors'],
+                   tcp_packets=event['stats']['decoder']['tcp'],
+                   udp_packets=event['stats']['decoder']['udp'],
+                   rules_loaded=event['stats']['detect']['engines'][0]['rules_loaded'],
+                   rules_failed=event['stats']['detect']['engines'][0]['rules_failed'],
+                   alerts=event['stats']['detect']['alert']
+                   )
+
+    def save(self, force_insert=False, only=None):
+        raise PermissionError("Alert model is read-only")
+
+    @classmethod
+    def get_by_id(cls, pk):
+        return cls.parse_from_eve(
+            cls.database.lindex(REDIS_STATS_NAME, pk))
+
+    @classmethod
+    def get_range(cls, offset, count):
+        stats_range = []
+        redis_range = cls.database.lrange(REDIS_STATS_NAME, offset, offset + count - 1)
+        for line in redis_range:
+            stats_range.append(cls.parse_from_eve(line))
+        return stats_range
+
+    @classmethod
+    def count(cls):
+        return cls.database.llen(REDIS_STATS_NAME)
 
 
 # If database users table not exists or empty, creating default one

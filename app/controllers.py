@@ -2,7 +2,7 @@ import datetime
 
 import peewee
 import redis
-from .models import User, Alert
+from .models import User, Alert, Stat
 from peewee import DoesNotExist
 from flask_login import login_user
 from . import utils, config
@@ -28,28 +28,15 @@ def get_daemon_status():
 
 def get_last_stats():
     try:
-        log_base = redis.StrictRedis(config.REDIS_HOST, config.REDIS_PORT)
-        if log_base.llen(config.REDIS_STATS_NAME) == 0:
-            return 2, None
-        last_stat = log_base.lindex(config.REDIS_STATS_NAME, 0)
-    except redis.exceptions.ConnectionError as ex:
+        return 0, Stat.get_by_id(0)
+    except redis.exceptions.ConnectionError:
         return 1, None
-
-    try:
-        event = json.loads(last_stat)
+    except redis.exceptions.RedisError:
+        return 2, None
     except json.JSONDecodeError:
+        return 3, None
+    except peewee.DataError:
         return 4, None
-
-    return 0, {
-        'uptime': str(datetime.timedelta(seconds=event['stats']['uptime'])),
-        'packets_captured': event['stats']['capture']['kernel_packets'],
-        'capture_errors': event['stats']['capture']['errors'],
-        'tcp_packets': event['stats']['decoder']['tcp'],
-        'udp_packets': event['stats']['decoder']['udp'],
-        'rules_loaded': event['stats']['detect']['engines'][0]['rules_loaded'],
-        'rules_failed': event['stats']['detect']['engines'][0]['rules_failed'],
-        'alerts': event['stats']['detect']['alert'],
-    }
 
 
 def get_alerts(count, offset=0):
