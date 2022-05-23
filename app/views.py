@@ -30,9 +30,7 @@ def settings_get():
     if not current_user.is_admin:
         return abort(404)
     suricata_error, suricata_log = controllers.get_suricata_log()
-    savannah_error, savannah_log = controllers.get_savannah_log()
-    return render_template('settings.html', suricata_error=suricata_error, savannah_error=savannah_error,
-                           suricata_log=suricata_log, savannah_log=savannah_log)
+    return render_template('settings.html', suricata_error=suricata_error, suricata_log=suricata_log)
 
 
 @app.route('/settings', methods=['POST'])

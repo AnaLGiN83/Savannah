@@ -21,12 +21,6 @@
             {% else %}{{ suricata_log }}
             {% endif %}</textarea>
     </div>
-    <h3>Savannah log</h3>
-    <div class="mb-5">
-        <textarea class="form-control" id="savannah-log" rows="8" readonly>{% if savannah_error %} Error while loading log file.
-            {% else %}{{ savannah_log }}
-            {% endif %}</textarea>
-    </div>
     <script>
         $(document).ready(function () {
            $("#update-form").submit(function ( event ){
