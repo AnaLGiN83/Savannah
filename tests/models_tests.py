@@ -2,8 +2,6 @@ import unittest
 
 import peewee
 import redis
-import tempfile
-from app import config
 from app.models import User, Alert, Stat
 from peewee import SqliteDatabase
 from app.config import REDIS_HOST, REDIS_PORT
@@ -121,6 +119,7 @@ class StatTestCase(unittest.TestCase):
         for line in self.test_stats:
             processed.append(Stat.parse_from_eve(line))
         self.assertEqual(processed, Stat.get_range(0, 2))
+
 
 if __name__ == '__main__':
     unittest.main()
