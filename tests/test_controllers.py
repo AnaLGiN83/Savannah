@@ -4,7 +4,7 @@ import tempfile
 import time
 import unittest
 from app import controllers, models, config
-from test_models import with_test_db
+from .test_models import with_test_db
 
 
 class LinuxControllersTestCase(unittest.TestCase):
