@@ -1,0 +1,6 @@
+flask
+jinja2==3.0.2
+flask-login
+peewee
+redis
+flask-babel

@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>{{ _('Login - Savannah') }}</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-md navbar-light bg-light">
+        <a class="navbar-brand" href="#">Savannah</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+        </div>
+    </nav>
+    <div class="container">
+        <div class="bg-white border rounded mt-5">
+            <section class="w-100 p-4 d-flex justify-content-center pb-4">
+                <form style="width: 22rem;" action="" method="post">
+                    <h4 class="bp3-heading pb-4 text-center">Savannah</h4>
+
+                  <!-- Login input -->
+                  <div class="form-outline mb-3">
+                      <input type="text" class="form-control" name="username" placeholder="{{ _('Username') }}" autofocus="" required/>
+                  </div>
+
+                  <!-- Password input -->
+                  <div class="form-outline mb-3">
+                    <input type="password" name="password" class="form-control" placeholder="{{ _('Password') }}" required/>
+                  </div>
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                        <div class="border rounded bg-danger bg-light text-danger p-1 mb-2">
+                            {% for category, message in  messages %}
+	                            <span class="{{ category }}">{{ message }}</span>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    {% endwith %}
+
+                  <!-- Submit button -->
+                  <button class="btn btn-primary btn-block mb-4">{{ _('Sign in') }}</button>
+
+                </form>
+            </section>
+        </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+</html>

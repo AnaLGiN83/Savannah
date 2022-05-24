@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% set active_page = "index" %}
+
+{% block content %}
+    <h1>{% block title %} {{ _('Suricata status') }} {% endblock %}</h1>
+    <div class="mb-5">
+        <span>{{ _('Service status:') }} </span>
+        <span class="font-weight-bold">{{ daemon_status }}</span>
+    </div>
+    <div>
+        <h3>{{ _('Actual statistics:') }}</h3>
+        {% include 'stats.html' %}
+    </div>
+{% endblock %}

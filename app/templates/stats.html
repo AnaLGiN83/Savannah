@@ -1,0 +1,12 @@
+{% if stats_error %}
+    <p>{{ _('EVE loading error.') }}</p>
+{% else %}
+    <p>{{ _('Uptime:') }} {{ stats.uptime }}</p>
+    <p>{{ _('Packets captured:') }} {{ stats.packets_captured }}</p>
+    <p>{{ _('Capture errors:') }} {{ stats.capture_errors }}</p>
+    <p>{{ _('TCP packets:') }} {{ stats.tcp_packets }}</p>
+    <p>{{ _('UDP packets:') }} {{ stats.udp_packets }}</p>
+    <p>{{ _('Rules loaded:') }} {{ stats.rules_loaded }}</p>
+    <p>{{ _('Rules failed:') }} {{ stats.rules_failed }}</p>
+    <p>{{ _('Alerts count:') }} {{ stats.alerts }}</p>
+{% endif %}
