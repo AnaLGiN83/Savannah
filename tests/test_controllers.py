@@ -12,7 +12,7 @@ class LinuxControllersTestCase(unittest.TestCase):
 
     def test_daemon_status_active(self):
         subprocess.check_output(f"systemctl start suricata", shell=True)
-        time.sleep(5)
+        time.sleep(60)
         self.assertIn('active', controllers.get_daemon_status())
 
     def test_last_stats(self):
