@@ -1,4 +1,5 @@
 import subprocess
+import time
 import unittest
 from app import controllers, models
 
@@ -6,10 +7,12 @@ from app import controllers, models
 class LinuxControllersTestCase(unittest.TestCase):
     def test_daemon_status_unknown(self):
         subprocess.check_output(f"systemctl stop suricata", shell=True)
+        time.sleep(5)
         self.assertIn('inactive', controllers.get_daemon_status())
 
     def test_daemon_status_active(self):
         subprocess.check_output(f"systemctl start suricata", shell=True)
+        time.sleep(5)
         self.assertIn('active', controllers.get_daemon_status())
 
     def test_last_stats(self):
